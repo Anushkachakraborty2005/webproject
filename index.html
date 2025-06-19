@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pure Kerala Spices - Authentic Herbal Goodness</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom CSS for loader, parallax, ripple, and other specific styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* Prevent horizontal scroll due to animations */
+        }
+
+        /* Loader Styles */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff; /* White background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        .spinner {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #8B4513; /* Earthy brown for spice theme */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loader-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Parallax Effect */
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Ripple Effect */
+        .ripple-button {
+            position: relative;
+            overflow: hidden;
+            transform: translate3d(0, 0, 0);
+        }
+        .ripple-button:after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform .5s, opacity 1s;
+        }
+        .ripple-button:active:after {
+            transform: scale(0, 0);
+            opacity: .2;
+            transition: 0s;
+        }
+
+        /* Pop-up Modal */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 10000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeInScale 0.3s ease-out forwards;
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Card Hover Effect */
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Custom graph/infographic styling */
+        .spice-journey-line {
+            background: linear-gradient(to right, #8B4513, #FFD700, #228B22);
+            height: 8px;
+            width: 100%;
+            border-radius: 4px;
+            position: relative;
+        }
+        .spice-journey-node {
+            width: 20px;
+            height: 20px;
+            background-color: #fff;
+            border: 4px solid #8B4513;
+            border-radius: 50%;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #8B4513;
+        }
+        .spice-journey-node.harvest { left: 10%; }
+        .spice-journey-node.process { left: 40%; }
+        .spice-journey-node.quality { left: 70%; }
+        .spice-journey-node.deliver { left: 90%; }
+        .spice-journey-text {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        /* Striking elements */
+        .gradient-text {
+            background: linear-gradient(45deg, #8B4513, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-shadow {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Loader -->
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Scroll & Pop-up Modal -->
+    <div id="popupModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 class="text-3xl font-bold text-green-700 mb-4">Unlock Special Savings!</h2>
+            <p class="text-lg text-gray-700 mb-6">Subscribe to our newsletter for exclusive offers, new product alerts, and spice tips straight from Kerala.</p>
+            <form class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <input type="email" placeholder="Your Email Address" class="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 flex-grow w-full sm:w-auto">
+                <button type="submit" class="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700 transition duration-300 ripple-button w-full sm:w-auto">Subscribe Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-lg py-4 fixed w-full z-50">
+        <nav class="container mx-auto flex justify-between items-center px-4">
+            <a href="#" class="text-3xl font-bold text-green-700 flex items-center">
+                <i class="fas fa-leaf text-green-600 mr-2"></i> Kerala Spices
+            </a>
+            <ul class="hidden md:flex space-x-6 text-lg">
+                <li><a href="#home" class="text-gray-700 hover:text-green-600 transition duration-300">Home</a></li>
+                <li><a href="#features" class="text-gray-700 hover:text-green-600 transition duration-300">Features</a></li>
+                <li><a href="#products" class="text-gray-700 hover:text-green-600 transition duration-300">Products</a></li>
+                <li><a href="#testimonials" class="text-gray-700 hover:text-green-600 transition duration-300">Testimonials</a></li>
+                <li><a href="#contact" class="text-gray-700 hover:text-green-600 transition duration-300">Contact</a></li>
+            </ul>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-700 hover:text-green-600 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white mt-2 shadow-lg">
+            <ul class="flex flex-col items-center py-4 space-y-4 text-lg">
+                <li><a href="#home" class="block text-gray-700 hover:text-green-600 transition duration-300 py-2">Home</a></li>
+                <li><a href="#features" class="block text-gray-700 hover:text-green-600 transition duration-300 py-2">Features</a></li>
+                <li><a href="#products" class="block text-gray-700 hover:text-green-600 transition duration-300 py-2">Products</a></li>
+                <li><a href="#testimonials" class="block text-gray-700 hover:text-green-600 transition duration-300 py-2">Testimonials</a></li>
+                <li><a href="#contact" class="block text-gray-700 hover:text-green-600 transition duration-300 py-2">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Homepage - Hero Section with Parallax -->
+    <section id="home" class="relative pt-24 h-screen flex items-center justify-center text-white parallax-bg"
+        style="background-image: url('uploaded:image_7a3c84.jpg-5236584c-970e-4eaf-b104-1af99110b72b');">
+        <div class="absolute inset-0 bg-black opacity-50"></div> <!-- Overlay for text readability -->
+        <div class="container mx-auto text-center relative z-10 px-4">
+            <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6">
+                Experience the <span class="gradient-text">Authentic Flavor</span> of Kerala Spices
+            </h1>
+            <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto">
+                Hand-picked, organically grown, and ethically sourced from the lush spice gardens of Kerala.
+            </p>
+            <a href="#products" class="bg-green-600 text-white text-xl px-8 py-4 rounded-full hover:bg-green-700 transition duration-300 shadow-lg ripple-button">
+                Explore Our Spices <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Features / Services Section -->
+    <section id="features" class="py-20 bg-gradient-to-r from-lime-50 to-green-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-green-800 mb-12">Why Choose Our Kerala Spices?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature Card 1 -->
+                <div class="bg-white p-8 rounded-lg shadow-md text-center card-shadow transition duration-300 hover:scale-105">
+                    <div class="text-5xl text-green-600 mb-4">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Pure & Organic</h3>
+                    <p class="text-gray-600">Our spices are cultivated naturally, free from pesticides and artificial additives, ensuring pure flavor.</p>
+                </div>
+                <!-- Feature Card 2 -->
+                <div class="bg-white p-8 rounded-lg shadow-md text-center card-shadow transition duration-300 hover:scale-105">
+                    <div class="text-5xl text-amber-600 mb-4">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Ethically Sourced</h3>
+                    <p class="text-gray-600">We work directly with local farmers in Kerala, ensuring fair wages and sustainable practices.</p>
+                </div>
+                <!-- Feature Card 3 -->
+                <div class="bg-white p-8 rounded-lg shadow-md text-center card-shadow transition duration-300 hover:scale-105">
+                    <div class="text-5xl text-red-600 mb-4">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Rich Aroma & Flavor</h3>
+                    <p class="text-gray-600">Experience the vibrant taste and intoxicating aroma that only authentic Kerala spices can offer.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products & Promotions Section -->
+    <section id="products" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-green-800 mb-12">Our Premium Spice Collection</h2>
+
+            <!-- Product Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <!-- Product Card 1 -->
+                <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden product-card transition duration-300">
+                    <img src="https://placehold.co/600x400/D2B48C/FFFFFF?text=Cardamom" alt="Kerala Cardamom" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-2">Green Cardamom</h3>
+                        <p class="text-gray-600 mb-4">Known as the "Queen of Spices," our green cardamom pods are highly aromatic and flavorful.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-green-700 text-2xl font-bold">₹750 / 100g</span>
+                            <button class="bg-amber-600 text-white px-5 py-2 rounded-full hover:bg-amber-700 transition duration-300 ripple-button">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card 2 -->
+                <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden product-card transition duration-300">
+                    <img src="https://placehold.co/600x400/6B4226/FFFFFF?text=Black+Pepper" alt="Kerala Black Pepper" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-2">Malabar Black Pepper</h3>
+                        <p class="text-gray-600 mb-4">The "King of Spices," our Malabar pepper boasts a bold, pungent flavor. Perfect for any dish.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-green-700 text-2xl font-bold">₹420 / 250g</span>
+                            <button class="bg-amber-600 text-white px-5 py-2 rounded-full hover:bg-amber-700 transition duration-300 ripple-button">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product Card 3 -->
+                <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden product-card transition duration-300">
+                    <img src="https://placehold.co/600x400/FFD700/8B4513?text=Turmeric" alt="Kerala Turmeric" class="w-full h-56 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-2">Alleppey Turmeric</h3>
+                        <p class="text-gray-600 mb-4">High-curcumin turmeric powder, vibrant in color and rich in health benefits.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-green-700 text-2xl font-bold">₹300 / 200g</span>
+                            <button class="bg-amber-600 text-white px-5 py-2 rounded-full hover:bg-amber-700 transition duration-300 ripple-button">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-gradient-to-l from-orange-50 to-amber-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-green-800 mb-12">What Our Customers Say</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial Card 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-md card-shadow transition duration-300 hover:shadow-xl">
+                    <div class="flex items-center mb-4">
+                        <img src="https://placehold.co/80x80/6A5ACD/FFFFFF?text=AI" alt="Customer Avatar" class="w-16 h-16 rounded-full mr-4 object-cover">
+                        <div>
+                            <p class="font-semibold text-lg text-gray-900">Anu Kumar</p>
+                            <p class="text-sm text-gray-500">Food Blogger</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed italic">"The aroma of the cardamom is simply divine! It elevated my biryani to a whole new level. Truly authentic Kerala quality."</p>
+                    <div class="flex justify-start text-yellow-500 mt-4">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <!-- Testimonial Card 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-md card-shadow transition duration-300 hover:shadow-xl">
+                    <div class="flex items-center mb-4">
+                        <img src="https://placehold.co/80x80/20B2AA/FFFFFF?text=AI" alt="Customer Avatar" class="w-16 h-16 rounded-full mr-4 object-cover">
+                        <div>
+                            <p class="font-semibold text-lg text-gray-900">David Chen</p>
+                            <p class="text-sm text-gray-500">Chef, Restaurant Owner</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed italic">"I've been sourcing spices globally, and Kerala Spices' black pepper is unmatched. The freshness and pungency are incredible."</p>
+                    <div class="flex justify-start text-yellow-500 mt-4">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                <!-- Testimonial Card 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-md card-shadow transition duration-300 hover:shadow-xl">
+                    <div class="flex items-center mb-4">
+                        <img src="https://placehold.co/80x80/DC143C/FFFFFF?text=AI" alt="Customer Avatar" class="w-16 h-16 rounded-full mr-4 object-cover">
+                        <div>
+                            <p class="font-semibold text-lg text-gray-900">Priya Sharma</p>
+                            <p class="text-sm text-gray-500">Home Cook</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed italic">"The turmeric powder adds such a vibrant color and authentic flavor to my curries. It's clear these are premium quality spices."</p>
+                    <div class="flex justify-start text-yellow-500 mt-4">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 bg-green-700 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-12">Our Impact & Growth</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="p-6 rounded-lg bg-green-600 shadow-md">
+                    <div class="text-6xl font-bold mb-2" data-target="15">0</div>
+                    <p class="text-xl">Years of Expertise</p>
+                </div>
+                <div class="p-6 rounded-lg bg-green-600 shadow-md">
+                    <div class="text-6xl font-bold mb-2" data-target="25000">0</div>
+                    <p class="text-xl">Happy Customers</p>
+                </div>
+                <div class="p-6 rounded-lg bg-green-600 shadow-md">
+                    <div class="text-6xl font-bold mb-2" data-target="50">0</div>
+                    <p class="text-xl">Varieties of Spices</p>
+                </div>
+                <div class="p-6 rounded-lg bg-green-600 shadow-md">
+                    <div class="text-6xl font-bold mb-2" data-target="98">0</div>
+                    <p class="text-xl">Customer Satisfaction (%)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Showcase Work / Spice Journey (Graph interpretation) -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-green-800 mb-12">Our Spice Journey: From Farm to Flavor</h2>
+            <div class="relative flex items-center justify-between mt-12 mb-20">
+                <div class="spice-journey-line"></div>
+                <div class="absolute flex flex-col items-center spice-journey-node harvest">
+                    <i class="fas fa-seedling text-3xl mb-2"></i>
+                    <div class="text-center spice-journey-text">Harvesting</div>
+                </div>
+                <div class="absolute flex flex-col items-center spice-journey-node process">
+                    <i class="fas fa-industry text-3xl mb-2"></i>
+                    <div class="text-center spice-journey-text">Processing</div>
+                </div>
+                <div class="absolute flex flex-col items-center spice-journey-node quality">
+                    <i class="fas fa-certificate text-3xl mb-2"></i>
+                    <div class="text-center spice-journey-text">Quality Check</div>
+                </div>
+                <div class="absolute flex flex-col items-center spice-journey-node deliver">
+                    <i class="fas fa-truck text-3xl mb-2"></i>
+                    <div class="text-center spice-journey-text">Delivery</div>
+                </div>
+            </div>
+            <p class="text-center text-lg text-gray-700 max-w-3xl mx-auto">
+                We take immense pride in every step of our journey, ensuring that only the finest, most authentic spices reach your kitchen. From sustainable cultivation in Kerala's rich soil to careful processing and stringent quality checks, we guarantee excellence.
+            </p>
+        </div>
+    </section>
+
+    <!-- Customer Section / Contact Form -->
+    <section id="contact" class="py-20 bg-green-800 text-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12">Connect With Us</h2>
+            <div class="flex flex-col md:flex-row gap-12 items-center justify-center">
+                <!-- Contact Info -->
+                <div class="md:w-1/2 text-center md:text-left">
+                    <p class="text-lg mb-4"><i class="fas fa-map-marker-alt mr-3"></i> Spice Gardens, Idukki, Kerala, India</p>
+                    <p class="text-lg mb-4"><i class="fas fa-envelope mr-3"></i> info@keralaspices.com</p>
+                    <p class="text-lg mb-4"><i class="fas fa-phone-alt mr-3"></i> +91 98765 43210</p>
+                    <div class="flex justify-center md:justify-start space-x-6 mt-8">
+                        <a href="#" class="text-4xl hover:text-amber-500 transition duration-300"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-4xl hover:text-amber-500 transition duration-300"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-4xl hover:text-amber-500 transition duration-300"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-4xl hover:text-amber-500 transition duration-300"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <!-- Contact Form -->
+                <div class="md:w-1/2 w-full bg-white p-8 rounded-lg shadow-lg text-gray-800">
+                    <h3 class="text-2xl font-bold mb-6 text-center">Send Us a Message</h3>
+                    <form>
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Your Name</label>
+                            <input type="text" id="name" name="name" class="shadow appearance-none border rounded-md w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="John Doe">
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Your Email</label>
+                            <input type="email" id="email" name="email" class="shadow appearance-none border rounded-md w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="john.doe@example.com">
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 text-sm font-bold mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5" class="shadow appearance-none border rounded-md w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Your message..."></textarea>
+                        </div>
+                        <button type="submit" class="bg-green-600 text-white font-bold py-3 px-6 rounded-md hover:bg-green-700 transition duration-300 w-full ripple-button">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-10">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <a href="#" class="text-2xl font-bold flex items-center mb-4 md:mb-0">
+                    <i class="fas fa-leaf text-green-500 mr-2"></i> Kerala Spices
+                </a>
+                <ul class="flex flex-wrap justify-center md:justify-end space-x-6">
+                    <li><a href="#home" class="text-gray-300 hover:text-white transition duration-300">Home</a></li>
+                    <li><a href="#features" class="text-gray-300 hover:text-white transition duration-300">Features</a></li>
+                    <li><a href="#products" class="text-gray-300 hover:text-white transition duration-300">Products</a></li>
+                    <li><a href="#testimonials" class="text-gray-300 hover:text-white transition duration-300">Testimonials</a></li>
+                    <li><a href="#contact" class="text-gray-300 hover:text-white transition duration-300">Contact</a></li>
+                </ul>
+            </div>
+            <p class="text-gray-400">&copy; 2024 Pure Kerala Spices. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Loader Functionality
+            const loader = document.getElementById('loader');
+            window.addEventListener('load', () => {
+                loader.classList.add('loader-hidden');
+            });
+
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Parallax Effect for Hero Section
+            const heroSection = document.getElementById('home');
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                // Adjust this multiplier for more or less parallax effect
+                heroSection.style.backgroundPositionY = -scrollY * 0.5 + 'px';
+            });
+
+            // Ripple Effect for Buttons
+            document.querySelectorAll('.ripple-button').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+
+                    const existingRipple = this.querySelector('.ripple');
+                    if (existingRipple) {
+                        existingRipple.remove();
+                    }
+
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    ripple.style.width = ripple.style.height = `${size}px`;
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+                    this.appendChild(ripple);
+
+                    // Remove ripple after animation
+                    ripple.addEventListener('animationend', () => {
+                        ripple.remove();
+                    });
+                });
+            });
+
+            // Add CSS for ripple effect dynamically or include in <style> tag
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .ripple {
+                    display: block;
+                    position: absolute;
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple-animation 0.6s linear;
+                    background-color: rgba(255, 255, 255, 0.7); /* White ripple */
+                    pointer-events: none;
+                }
+                @keyframes ripple-animation {
+                    to {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+
+            // Scroll & Pop-up Functionality
+            const popupModal = document.getElementById('popupModal');
+            const closeButton = document.querySelector('.close-button');
+            let popupShown = false;
+
+            const showPopup = () => {
+                if (!popupShown) {
+                    popupModal.classList.remove('hidden');
+                    popupShown = true;
+                }
+            };
+
+            closeButton.addEventListener('click', () => {
+                popupModal.classList.add('hidden');
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target == popupModal) {
+                    popupModal.classList.add('hidden');
+                }
+            });
+
+            // Trigger pop-up after scrolling 30% of the page height
+            window.addEventListener('scroll', () => {
+                const scrollPercentage = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+                if (scrollPercentage > 30 && !popupShown) {
+                    showPopup();
+                }
+            });
+
+            // Also trigger after a delay for users who don't scroll immediately
+            setTimeout(() => {
+                if (!popupShown) {
+                    showPopup();
+                }
+            }, 8000); // Show after 8 seconds if not already shown by scroll
+
+            // Stats Animation (Counting Up)
+            const statsSection = document.querySelector('.bg-green-700'); // Assuming this is the stats section
+            const stats = document.querySelectorAll('[data-target]');
+            let statsAnimated = false;
+
+            const animateValue = (obj, start, end, duration) => {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString();
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            };
+
+            const checkStatsVisibility = () => {
+                if (!statsAnimated && statsSection) {
+                    const rect = statsSection.getBoundingClientRect();
+                    const isVisible = (rect.top <= window.innerHeight && rect.bottom >= 0);
+
+                    if (isVisible) {
+                        stats.forEach(stat => {
+                            const target = parseInt(stat.getAttribute('data-target'));
+                            animateValue(stat, 0, target, 2000); // 2000ms = 2 seconds
+                        });
+                        statsAnimated = true;
+                    }
+                }
+            };
+
+            window.addEventListener('scroll', checkStatsVisibility);
+            checkStatsVisibility(); // Check on page load in case it's already in view
+
+        });
+    </script>
+</body>
+</html>
